@@ -1,0 +1,15 @@
+.junior-chip { background-color: #e3f2fd !important; }
+.senior-chip { background-color: #f3e5f5 !important; }
+
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #777;
+}	
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}

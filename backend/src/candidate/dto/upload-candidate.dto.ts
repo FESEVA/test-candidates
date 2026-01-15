@@ -2,12 +2,12 @@ import { IsString, IsNotEmpty, MinLength } from 'class-validator';
 
 export class UploadCandidateDto {
   @IsString()
-  @IsNotEmpty({ message: 'El nombre es obligatorio' })
-  @MinLength(2, { message: 'El nombre debe tener al menos 2 caracteres' })
+  @IsNotEmpty({ message: 'First name is required' })
+  @MinLength(2, { message: 'First name must be at least 2 characters long' })
   name: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'El apellido es obligatorio' })
-  @MinLength(2, { message: 'El apellido debe tener al menos 2 caracteres' })
+  @IsNotEmpty({ message: 'Last name is required' })
+  @MinLength(2, { message: 'Last name must be at least 2 characters long' })
   surname: string;
 }

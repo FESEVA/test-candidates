@@ -20,6 +20,7 @@ import { CandidateService } from './candidate.service';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto } from './dto/update-candidate.dto';
 import { Candidate } from './candidate.entity';
+import { UploadCandidateDto } from './dto/upload-candidate.dto';
 
 @Controller('candidates')
 export class CandidateController {
@@ -35,7 +36,7 @@ export class CandidateController {
   @UseInterceptors(FileInterceptor('excelFile'))
   @HttpCode(HttpStatus.CREATED)
   uploadCandidate(
-    @Body() body: { name: string; surname: string },
+    @Body() body: UploadCandidateDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.candidateService.processExcelAndCreate(
