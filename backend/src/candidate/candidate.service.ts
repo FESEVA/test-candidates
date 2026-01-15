@@ -36,6 +36,7 @@ export class CandidateService {
       if (error.code === '23505') {
         throw new BadRequestException('Candidate already exists');
       }
+      console.error(error);
       throw new InternalServerErrorException('Error creating candidate');
     }
   }
@@ -80,6 +81,7 @@ export class CandidateService {
 
       return await queryBuilder.getMany();
     } catch (error) {
+      console.error(error);
       throw new InternalServerErrorException('Error retrieving candidates');
     }
   }
@@ -99,6 +101,7 @@ export class CandidateService {
       if (error instanceof NotFoundException) {
         throw error;
       }
+      console.error(error);
       throw new InternalServerErrorException('Error retrieving candidate');
     }
   }
@@ -119,6 +122,7 @@ export class CandidateService {
       if (error instanceof NotFoundException) {
         throw error;
       }
+      console.error(error);
       throw new InternalServerErrorException('Error updating candidate');
     }
   }
@@ -131,6 +135,7 @@ export class CandidateService {
       if (error instanceof NotFoundException) {
         throw error;
       }
+      console.error(error);
       throw new InternalServerErrorException('Error deleting candidate');
     }
   }
@@ -158,6 +163,7 @@ export class CandidateService {
       if (error instanceof BadRequestException) {
         throw error;
       }
+      console.error(error);
       throw new InternalServerErrorException('Error processing Excel file');
     }
   }
