@@ -57,7 +57,14 @@ export class CandidateService {
 
     return this.http.post<Candidate>(`${this.apiUrl}/upload`, formData).pipe(
       tap((newCandidate) => {
-        this.#candidates.update((list) => [newCandidate, ...list.slice(0, -1)]);
+        if (this.#candidates().length >= 10) {
+          this.#candidates.update((list) => [
+            newCandidate,
+            ...list.slice(0, -1),
+          ]);
+        } else {
+          this.#candidates.update((list) => [newCandidate, ...list]);
+        }
       })
     );
   }
