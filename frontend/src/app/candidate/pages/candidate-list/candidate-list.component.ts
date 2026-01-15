@@ -53,6 +53,7 @@ export class CandidateListComponent implements OnInit {
   ];
 
   candidates = this.candidateService.candidates;
+  isLoading = false;
   filters = signal<CandidateFilters>({});
   totalItems = signal(0);
   pageSize = signal(10);
@@ -89,13 +90,18 @@ export class CandidateListComponent implements OnInit {
   }
 
   refreshData() {
+    this.isLoading = true;
     this.candidateService
       .loadCandidates(this.currentPage(), this.pageSize(), this.filters())
       .subscribe({
         next: (response) => {
+          this.isLoading = false;
           this.totalItems.set(response.meta.total);
         },
-        error: (err) => console.error('Error loading data', err),
+        error: (err) => {
+          this.isLoading = false;
+          console.error('Error loading data', err);
+        },
       });
   }
 

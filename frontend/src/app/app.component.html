@@ -1,3 +1,25 @@
 <main class="container">
+  @if (loadingService.isLoading()) {
+  <div class="loading-overlay">
+    <div class="alert-card">
+      <div class="spinner"></div>
+
+      @if (loadingService.isLongWait()) {
+      <div class="render-info">
+        <h3>🚀 Activando Servidor</h3>
+        <p>
+          El hosting gratuito de <strong>Render</strong> se pone en pausa tras
+          15 min de inactividad.
+        </p>
+        <p class="highlight">
+          Estamos despertando el servicio, por favor espera unos segundos...
+        </p>
+      </div>
+      } @else {
+      <p>Cargando datos...</p>
+      }
+    </div>
+  </div>
+  }
   <router-outlet />
 </main>
