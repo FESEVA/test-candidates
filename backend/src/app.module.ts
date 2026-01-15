@@ -33,11 +33,9 @@ const logger = new Logger('AppModule');
           entities: [Candidate],
           synchronize: !!databaseUrl,
           logging: configService.get<string>('NODE_ENV') === 'development',
-          // Cambiamos esta línea:
           ssl: useSsl ? { rejectUnauthorized: false } : false,
           retryAttempts: 5,
           retryDelay: 3000,
-          // Opciones extra para el Pooler de Supabase
           extra: useSsl
             ? {
                 connectionTimeoutMillis: 10000,
