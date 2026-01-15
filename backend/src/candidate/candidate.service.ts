@@ -11,6 +11,7 @@ import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto } from './dto/update-candidate.dto';
 import * as XLSX from 'xlsx';
 import { SqlSanitizer } from 'src/common/sanitizers/sql-sanitizer.util';
+import { toCamelCase } from 'src/common/utils/string.utils';
 
 @Injectable()
 export class CandidateService {
@@ -33,9 +34,9 @@ export class CandidateService {
       return await this.candidateRepository.save(candidate);
     } catch (error) {
       if (error.code === '23505') {
-        throw new BadRequestException('El candidato ya existe');
+        throw new BadRequestException('Candidate already exists');
       }
-      throw new InternalServerErrorException('Error al crear el candidato');
+      throw new InternalServerErrorException('Error creating candidate');
     }
   }
 
@@ -79,7 +80,7 @@ export class CandidateService {
 
       return await queryBuilder.getMany();
     } catch (error) {
-      throw new InternalServerErrorException('Error al obtener los candidatos');
+      throw new InternalServerErrorException('Error retrieving candidates');
     }
   }
 
@@ -90,7 +91,7 @@ export class CandidateService {
       });
 
       if (!candidate) {
-        throw new NotFoundException(`Candidato con ID ${id} no encontrado`);
+        throw new NotFoundException(`Candidate with ID ${id} not found`);
       }
 
       return candidate;
@@ -98,7 +99,7 @@ export class CandidateService {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      throw new InternalServerErrorException('Error al obtener el candidato');
+      throw new InternalServerErrorException('Error retrieving candidate');
     }
   }
 
@@ -118,9 +119,7 @@ export class CandidateService {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      throw new InternalServerErrorException(
-        'Error al actualizar el candidato',
-      );
+      throw new InternalServerErrorException('Error updating candidate');
     }
   }
 
@@ -132,7 +131,7 @@ export class CandidateService {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      throw new InternalServerErrorException('Error al eliminar el candidato');
+      throw new InternalServerErrorException('Error deleting candidate');
     }
   }
 
@@ -159,9 +158,7 @@ export class CandidateService {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new InternalServerErrorException(
-        'Error al procesar el archivo Excel',
-      );
+      throw new InternalServerErrorException('Error processing Excel file');
     }
   }
 
@@ -174,37 +171,67 @@ export class CandidateService {
       const data = XLSX.utils.sheet_to_json(worksheet);
 
       if (data.length === 0) {
-        throw new BadRequestException('El archivo Excel está vacío');
+        throw new BadRequestException('Excel file is empty');
       }
 
-      return data[0];
+      const excelData: any = data[0];
+
+      const formattedData: any = {};
+      Object.keys(excelData).forEach((key) => {
+        const camelKey = toCamelCase(key);
+        formattedData[camelKey] = excelData[key];
+      });
+
+      return formattedData;
     } catch (error) {
-      throw new BadRequestException('Error al leer el archivo Excel');
+      throw new BadRequestException('Error reading Excel file');
     }
   }
 
   private validateExcelData(data: any): void {
     const requiredColumns = ['seniority', 'yearsOfExperience', 'availability'];
 
-    for (const column of requiredColumns) {
-      if (!(column in data)) {
+    const dataKeys = Object.keys(data);
+
+    dataKeys.forEach((key) => {
+      if (!requiredColumns.includes(key)) {
+        throw new BadRequestException(`Column '${key}' is not allowed.`);
+      }
+    });
+
+    requiredColumns.forEach((col) => {
+      const value = data[col];
+      if (
+        value === undefined ||
+        value === null ||
+        String(value).trim() === ''
+      ) {
         throw new BadRequestException(
-          `Falta la columna requerida: ${column}. Columnas requeridas: ${requiredColumns.join(', ')}`,
+          `Column '${col}' is required and cannot be empty.`,
         );
       }
-    }
+    });
 
     const validSeniorities = ['junior', 'senior'];
-    if (!validSeniorities.includes(data.seniority?.toLowerCase())) {
+    if (!validSeniorities.includes(data.seniority)) {
       throw new BadRequestException(
-        `Seniority debe ser uno de: ${validSeniorities.join(', ')}. Valor recibido: ${data.seniority}`,
+        `Seniority must be one of: ${validSeniorities.join(', ')}. Received: ${data.seniority}`,
       );
     }
 
     const years = Number(data.yearsOfExperience);
     if (isNaN(years) || years < 0 || years > 50) {
       throw new BadRequestException(
-        `Años de experiencia debe ser un número entre 0 y 50. Valor recibido: ${data.yearsOfExperience}`,
+        `Years of experience must be a number between 0 and 50. Received: ${data.yearsOfExperience}`,
+      );
+    }
+
+    const availabilityValue = data.availability;
+    try {
+      this.parseBoolean(availabilityValue);
+    } catch {
+      throw new BadRequestException(
+        `Availability must be a boolean value (true/false, 1/0, yes/no). Received: ${availabilityValue}`,
       );
     }
   }
@@ -214,23 +241,17 @@ export class CandidateService {
     if (typeof value === 'number') return value !== 0;
     if (typeof value === 'string') {
       const lower = value.toLowerCase();
-      if (
-        lower === 'true' ||
-        lower === '1' ||
-        lower === 'yes' ||
-        lower === 'si'
-      )
-        return true;
+      if (lower === 'true' || lower === '1' || lower === 'yes') return true;
       if (lower === 'false' || lower === '0' || lower === 'no') return false;
     }
-    throw new BadRequestException(`Valor de disponibilidad inválido: ${value}`);
+    throw new BadRequestException(`Invalid availability value: ${value}`);
   }
 
   private validateDtoForSqlInjection(dto: any): void {
     Object.entries(dto).forEach(([key, value]) => {
       if (typeof value === 'string' && SqlSanitizer.hasSqlInjection(value)) {
         throw new BadRequestException(
-          `Campo '${key}' contiene código SQL peligroso`,
+          `Field '${key}' contains dangerous SQL code`,
         );
       }
     });

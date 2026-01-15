@@ -1,0 +1,69 @@
+<div class="header-container">
+  <button
+    mat-icon-button
+    routerLink="/candidates"
+    class="back-button"
+    title="Back to list"
+  >
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1>Candidate Details</h1>
+</div>
+
+<div class="candidate-detail">
+  @if (candidate(); as c) {
+  <header class="detail-header">
+    <div class="title-group">
+      <mat-icon color="primary" class="large-icon">account_circle</mat-icon>
+      <div>
+        <h1>{{ c.name }} {{ c.surname }}</h1>
+        <span class="id-badge">ID #{{ c.id }}</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-icon-button color="primary" (click)="openEditDialog(c)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="confirmDelete(c)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <hr class="divider" />
+
+  <div class="info-container">
+    <div class="info-row">
+      <span class="label">Seniority:</span>
+      <span class="value seniority-tag">{{ c.seniority | uppercase }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Experience:</span>
+      <span class="value">{{ c.yearsOfExperience }} years</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Status:</span>
+      <span class="value">
+        <span
+          class="status-indicator"
+          [class.available]="c.availability"
+        ></span>
+        {{ c.availability ? "Available" : "Not available" }}
+      </span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Registration Date:</span>
+      <span class="value">{{ c.createdAt | date : "longDate" }}</span>
+    </div>
+  </div>
+
+  } @else {
+  <div class="loading-state">
+    <p>Loading candidate information... ⏳</p>
+  </div>
+  }
+</div>

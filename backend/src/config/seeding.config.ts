@@ -15,7 +15,7 @@ export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   entities: ['src/**/*.entity{.ts,.js}'],
   seeds: ['src/database/seeds/**/*.seed{.ts,.js}'],
   factories: ['src/database/factories/**/*.factory{.ts,.js}'],
-  synchronize: false,
+  synchronize: process.env.NODE_ENV === 'production' ? false : true,
   ssl:
     process.env.NODE_ENV === 'production'
       ? { rejectUnauthorized: false }

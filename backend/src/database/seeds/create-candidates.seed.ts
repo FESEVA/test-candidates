@@ -17,6 +17,7 @@ export default class CreateCandidates implements Seeder {
       yearsOfExperience: 4,
       availability: true,
     };
+
     const candidateExists = await candidateRepository.findOneBy({
       name: candidateData.name,
       surname: candidateData.surname,
@@ -26,11 +27,11 @@ export default class CreateCandidates implements Seeder {
       await candidateRepository.save(candidateData);
     }
 
-    console.log('✓ Primer candidato fijo creado');
+    console.log('✓ Initial fixed candidate created');
 
     const candidateFactory = factoryManager.get(Candidate);
     await candidateFactory.saveMany(10);
 
-    console.log('✓ 10 candidatos aleatorios creados');
+    console.log('✓ 10 random candidates created');
   }
 }

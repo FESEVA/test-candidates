@@ -1,0 +1,102 @@
+.candidate-detail {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title-group h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.large-icon {
+  transform: scale(1.5);
+}
+
+.id-badge {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin-bottom: 2rem;
+}
+
+.info-container {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.info-row {
+  display: flex;
+  border-bottom: 1px solid #f9f9f9;
+  padding-bottom: 0.5rem;
+}
+
+.label {
+  width: 150px;
+  font-weight: 600;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.value {
+  font-size: 1rem;
+}
+
+.seniority-tag {
+  background: #f0f4f8;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff4d4d; 
+  margin-right: 5px;
+}
+
+.status-indicator.available {
+  background: #2ecc71; 
+}
+
+.loading-state {
+  text-align: center;
+  padding: 3rem;
+  color: #999;
+}
+
+.actions button {
+  margin-left: 0.5rem;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}

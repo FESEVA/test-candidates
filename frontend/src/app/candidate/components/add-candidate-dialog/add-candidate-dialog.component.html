@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Add New Candidate</h2>
+
+<mat-dialog-content [formGroup]="candidateForm">
+  <div class="form-container">
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="name" placeholder="E.g. Fernando Iván" />
+      @if (candidateForm.get('name')?.hasError('required')) {
+      <mat-error>Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input
+        matInput
+        formControlName="surname"
+        placeholder="E.g. Sevilla Valderrama"
+      />
+      @if (candidateForm.get('surname')?.hasError('required')) {
+      <mat-error>Last name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="file-section">
+      <p>
+        Additional Information (Seniority, Years of experience, Availability)
+      </p>
+      <button type="button" mat-stroked-button (click)="fileInput.click()">
+        Upload from Excel 📊
+      </button>
+      <input
+        #fileInput
+        type="file"
+        (change)="onFileSelected($event)"
+        hidden
+        accept=".xlsx, .xls"
+      />
+
+      @if (candidateForm.value.excelFile) {
+      <p class="file-name">File: {{ candidateForm.value.excelFile.name }}</p>
+      }
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="candidateForm.invalid || isLoading()"
+    (click)="save()"
+  >
+    @if (isLoading()) { Loading... 🔄 } @else { Save Candidate }
+  </button>
+</mat-dialog-actions>

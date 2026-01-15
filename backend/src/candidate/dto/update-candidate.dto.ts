@@ -14,29 +14,29 @@ import { Seniority } from '../candidate.entity';
 export class UpdateCandidateDto {
   @IsOptional()
   @IsString()
-  @MinLength(2, { message: 'El nombre debe tener al menos 2 caracteres' })
+  @MinLength(2, { message: 'First name must be at least 2 characters long' })
   name?: string;
 
   @IsOptional()
   @IsString()
-  @MinLength(2, { message: 'El apellido debe tener al menos 2 caracteres' })
+  @MinLength(2, { message: 'Last name must be at least 2 characters long' })
   surname?: string;
 
   @IsOptional()
   @IsEnum(Seniority, {
-    message: 'Seniority debe ser "junior" o "senior"',
+    message: 'Seniority must be either "junior" or "senior"',
   })
   seniority?: Seniority;
 
   @IsOptional()
-  @IsNumber({}, { message: 'Los años de experiencia deben ser un número' })
-  @Min(0, { message: 'Los años de experiencia no pueden ser negativos' })
-  @Max(50, { message: 'Los años de experiencia no pueden ser más de 50' })
+  @IsNumber({}, { message: 'Years of experience must be a number' })
+  @Min(0, { message: 'Years of experience cannot be negative' })
+  @Max(50, { message: 'Years of experience cannot exceed 50' })
   @Type(() => Number)
   yearsOfExperience?: number;
 
   @IsOptional()
-  @IsBoolean({ message: 'Disponibilidad debe ser true o false' })
+  @IsBoolean({ message: 'Availability must be true or false' })
   @Type(() => Boolean)
   availability?: boolean;
 }
