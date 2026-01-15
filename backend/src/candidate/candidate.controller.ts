@@ -37,7 +37,7 @@ export class CandidateController {
   @HttpCode(HttpStatus.CREATED)
   uploadCandidate(
     @Body() body: UploadCandidateDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: { buffer: Buffer },
   ) {
     return this.candidateService.processExcelAndCreate(
       body.name,
