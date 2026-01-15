@@ -15,9 +15,8 @@ const logger = new Logger('AppModule');
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        const isProduction =
-          configService.get<string>('NODE_ENV') === 'production';
         const databaseUrl = configService.get<string>('DATABASE_URL');
+        const useSsl = !!databaseUrl;
 
         const databaseConfig = {
           type: 'postgres' as const,
@@ -32,15 +31,22 @@ const logger = new Logger('AppModule');
                 schema: configService.get<string>('DATABASE_SCHEMA'),
               }),
           entities: [Candidate],
-          synchronize: !isProduction, // Never synchronize in production!
+          synchronize: !!databaseUrl,
           logging: configService.get<string>('NODE_ENV') === 'development',
-          ssl: isProduction ? { rejectUnauthorized: false } : false, // Required for most cloud DBs
+          // Cambiamos esta línea:
+          ssl: useSsl ? { rejectUnauthorized: false } : false,
           retryAttempts: 5,
           retryDelay: 3000,
+          // Opciones extra para el Pooler de Supabase
+          extra: useSsl
+            ? {
+                connectionTimeoutMillis: 10000,
+              }
+            : {},
         };
 
         logger.log(
-          `🔌 Database connected via ${databaseUrl ? 'URL' : 'Individual Config'}`,
+          `🔌 Database connected via ${databaseUrl ? 'URL' : 'Individual Config'} (SSL: ${useSsl})`,
         );
         return databaseConfig;
       },
