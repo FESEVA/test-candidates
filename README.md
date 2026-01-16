@@ -98,4 +98,3 @@ This project is fully deployed and production-ready using the following cloud pr
 
 > **Note:** Due to Render's free tier sleep policy, the initial request may take up to 60 seconds to wake up the service. A built-in UI alert informs users during this process.
 
----
