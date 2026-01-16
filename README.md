@@ -99,9 +99,3 @@ This project is fully deployed and production-ready using the following cloud pr
 > **Note:** Due to Render's free tier sleep policy, the initial request may take up to 60 seconds to wake up the service. A built-in UI alert informs users during this process.
 
 ---
-
-You're right. To make the **Table of Contents** work, the links must match the header IDs exactly. I have also added a clear **System Architecture** section describing how the data flows between your Angular 19 frontend and the NestJS/Supabase backend.
-
-Here is the corrected and complete README:
-
----
