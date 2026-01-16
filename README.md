@@ -97,4 +97,3 @@ This project is fully deployed and production-ready using the following cloud pr
 * **Database:** [Supabase](https://www.google.com/search?q=https://supabase.com/). A managed PostgreSQL instance connected via a Transaction Pooler for high-performance data handling.
 
 > **Note:** Due to Render's free tier sleep policy, the initial request may take up to 60 seconds to wake up the service. A built-in UI alert informs users during this process.
-
