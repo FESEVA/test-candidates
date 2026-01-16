@@ -36,15 +36,7 @@ export class CandidateDetailComponent implements OnInit {
   private router = inject(Router);
   private alertService = inject(AlertService);
 
-  candidate = signal<Candidate | null>({
-    id: 1,
-    name: 'Fernando Iván',
-    surname: 'Sevilla Valderrama',
-    seniority: Seniority.JUNIOR,
-    yearsOfExperience: 4,
-    availability: true,
-    createdAt: new Date(),
-  });
+  candidate = signal<Candidate | null>(null);
 
   ngOnInit() {
     this.candidateService.findOne(Number(this.id())).subscribe((data) => {
