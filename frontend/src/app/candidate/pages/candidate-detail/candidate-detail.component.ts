@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { Candidate } from '../../candidate.model';
+import { Candidate, Seniority } from '../../candidate.model';
 import { CandidateService } from '../../candidate.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -36,7 +36,15 @@ export class CandidateDetailComponent implements OnInit {
   private router = inject(Router);
   private alertService = inject(AlertService);
 
-  candidate = signal<Candidate | null>(null);
+  candidate = signal<Candidate | null>({
+    id: 1,
+    name: 'Fernando Iván',
+    surname: 'Sevilla Valderrama',
+    seniority: Seniority.JUNIOR,
+    yearsOfExperience: 4,
+    availability: true,
+    createdAt: new Date(),
+  });
 
   ngOnInit() {
     this.candidateService.findOne(Number(this.id())).subscribe((data) => {

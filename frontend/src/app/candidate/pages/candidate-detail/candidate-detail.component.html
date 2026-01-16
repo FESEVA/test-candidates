@@ -14,9 +14,9 @@
   @if (candidate(); as c) {
   <header class="detail-header">
     <div class="title-group">
-      <mat-icon color="primary" class="large-icon">account_circle</mat-icon>
-      <div>
-        <h1>{{ c.name }} {{ c.surname }}</h1>
+      <h1>{{ c.name }} {{ c.surname }}</h1>
+      <div class="id-group">
+        <mat-icon color="primary" class="small-icon">account_circle</mat-icon>
         <span class="id-badge">ID #{{ c.id }}</span>
       </div>
     </div>
