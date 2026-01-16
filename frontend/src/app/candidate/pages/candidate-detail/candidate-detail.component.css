@@ -15,10 +15,11 @@
   margin-bottom: 1.5rem;
 }
 
-.title-group {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+
+.id-group {
+	display: flex;
+	align-items: center;
+	gap:0.2rem
 }
 
 .title-group h1 {
@@ -27,8 +28,10 @@
   font-weight: 500;
 }
 
-.large-icon {
-  transform: scale(1.5);
+.small-icon {
+ font-size: 1.2rem;
+ width: 1.2rem;
+ height: 1.2rem;
 }
 
 .id-badge {
